@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import BackwardsForm from "./components/BackwardsForm";
 import RangeForm from "./components/RangeForm";
+import Stats from "./components/Stats";
 
 import ethereumActions from "./redux/actions/ethereum-actions";
 
@@ -43,45 +44,18 @@ export class App extends Component {
           max={this.state.latestBlockNumber}
           onSubmit={(start, end) => fetchBlockRange(start, end)}
         />
-        <ul>
-          <li>Latest Block Number: {this.state.latestBlockNumber}</li>
-          <li>
-            Total Transferred Value:
-            {EthereumApi.weiToEther(totalReceivedWei)} ETH
-          </li>
-          <li>
-            Total Received Value:
-            {EthereumApi.weiToEther(totalReceivedWei)} ETH
-          </li>
-          <li>
-            Total Sent Value:
-            {EthereumApi.weiToEther(totalReceivedWei.plus(totalGasCostWei))} ETH
-          </li>
-          <li>
-            Receiving Adresses:
-            {receivingAddresses.join(", ")}
-          </li>
-          <li>
-            Sending Adresses:
-            {sendingAddresses.join(", ")}
-          </li>
-          <li>
-            Contract Adresses:
-            {contractAddresses.join(", ")}
-          </li>
-          <li>
-            Total Number of Uncles:
-            {totalUncles}
-          </li>
-          <li>
-            Total Number of Unique Addresses that Sent Transactions:
-            {sendingAddresses.length}
-          </li>
-          <li>
-            Total Number of Unique Addresses that Received Transactions:
-            {receivingAddresses.length}
-          </li>
-        </ul>
+        <p>Latest Block Number: {this.state.latestBlockNumber}</p>
+        <Stats
+          transferredEther={EthereumApi.weiToEther(totalReceivedWei)}
+          receivedEther={EthereumApi.weiToEther(totalReceivedWei)}
+          sentEther={EthereumApi.weiToEther(
+            totalReceivedWei.plus(totalGasCostWei)
+          )}
+          sendingAddresses={sendingAddresses}
+          receivingAddresses={receivingAddresses}
+          contractAddresses={contractAddresses}
+          uncleCount={totalUncles}
+        />
       </div>
     );
   }
