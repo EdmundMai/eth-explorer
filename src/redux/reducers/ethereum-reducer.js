@@ -5,7 +5,6 @@ global.BigNumber = BigNumber;
 const initState = {
   totalUncles: 0,
   totalGasCostWei: new BigNumber(0),
-  totalSentWei: new BigNumber(0),
   totalReceivedWei: new BigNumber(0),
   receivingAddresses: [],
   sendingAddresses: [],

@@ -20,7 +20,6 @@ export class App extends Component {
     const {
       totalUncles,
       totalGasCostWei,
-      totalSentWei,
       totalReceivedWei,
       receivingAddresses,
       sendingAddresses,
@@ -33,7 +32,7 @@ export class App extends Component {
           <li>Latest Block Number: {this.state.latestBlockNumber}</li>
           <li>
             Total Transferred Value:
-            {EthereumApi.weiToEther(totalSentWei)} ETH
+            {EthereumApi.weiToEther(totalReceivedWei)} ETH
           </li>
           <li>
             Total Received Value:
@@ -41,7 +40,7 @@ export class App extends Component {
           </li>
           <li>
             Total Sent Value:
-            {EthereumApi.weiToEther(totalSentWei + totalGasCostWei)} ETH
+            {EthereumApi.weiToEther(totalReceivedWei.plus(totalGasCostWei))} ETH
           </li>
           <li>
             Receiving Adresses:
@@ -85,7 +84,6 @@ export class App extends Component {
 const mapStateToProps = state => ({
   totalUncles: state.ethereum.totalUncles,
   totalGasCostWei: state.ethereum.totalGasCostWei,
-  totalSentWei: state.ethereum.totalSentWei,
   totalReceivedWei: state.ethereum.totalReceivedWei,
   receivingAddresses: state.ethereum.receivingAddresses,
   sendingAddresses: state.ethereum.sendingAddresses,

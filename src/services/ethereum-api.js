@@ -36,7 +36,7 @@ const filterByContracts = (addresses, callback) => {
   batch.execute();
 };
 
-const weiToEther = wei => web3.utils.fromWei(wei.toString(), "ether");
+const weiToEther = wei => web3.utils.fromWei(web3.utils.toBN(wei), "ether");
 
 export default {
   getLatestBlockNumber,
