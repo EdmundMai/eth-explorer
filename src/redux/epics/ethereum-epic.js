@@ -1,5 +1,12 @@
 import { from, of, Observable } from "rxjs";
-import { map, flatMap, mergeMap, switchMap, catchError } from "rxjs/operators";
+import {
+  filter,
+  map,
+  flatMap,
+  mergeMap,
+  switchMap,
+  catchError,
+} from "rxjs/operators";
 import { ofType, combineEpics } from "redux-observable";
 import EthereumApi from "../../services/ethereum-api";
 
@@ -16,12 +23,13 @@ const fetchBlockRangeEpic = action$ =>
           startingBlockNumber,
           endingBlockNumber,
           block => {
-            const { transactions, gasUsed } = block;
-            // console.log("block!!!: ", block);
+            const { transactions, gasUsed, uncles } = block;
+            console.log("block!!!: ", block);
             observer.next(
               ethereumActions.addBlock({
                 transactions,
-                gasUsed: parseInt(gasUsed),
+                gasUsed,
+                uncles,
               })
             );
           }
@@ -39,10 +47,10 @@ const addBlockEpic = action$ =>
 
         EthereumApi.getTransactions(transactionHashes, transaction => {
           const { value, from, to, gas, gasPrice } = transaction;
-          console.log(transaction);
+          // console.log("transaction!!!: ", transaction);
           observer.next(
             ethereumActions.addTransaction({
-              value: parseInt(value),
+              value,
               sendingAddress: from,
               receivingAddress: to,
             })
@@ -52,4 +60,34 @@ const addBlockEpic = action$ =>
     )
   );
 
-export default combineEpics(fetchBlockRangeEpic, addBlockEpic);
+const addTransactionEpic = action$ =>
+  action$.pipe(
+    ofType(ethereumActions.ADD_TRANSACTION),
+    flatMap(action => {
+      const { sendingAddress, receivingAddress } = action.payload;
+      return [
+        ethereumActions.checkAddressType(sendingAddress),
+        ethereumActions.checkAddressType(receivingAddress),
+      ];
+    })
+  );
+
+const checkAddressTypeEpic = action$ =>
+  action$.pipe(
+    ofType(ethereumActions.CHECK_ADDRESS_TYPE),
+    filter(action => !!action.payload),
+    mergeMap(action => {
+      const address = action.payload;
+      return from(EthereumApi.isContractAddress(address)).pipe(
+        filter(isContractAddress => !!isContractAddress),
+        map(() => ethereumActions.addContract(address))
+      );
+    })
+  );
+
+export default combineEpics(
+  fetchBlockRangeEpic,
+  addBlockEpic,
+  addTransactionEpic,
+  checkAddressTypeEpic
+);

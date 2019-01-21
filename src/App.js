@@ -18,11 +18,13 @@ export class App extends Component {
 
   render() {
     const {
+      totalUncles,
       totalGasWei,
       totalSentWei,
       totalReceivedWei,
       receivingAddresses,
       sendingAddresses,
+      contractAddresses,
       fetchBlockRange,
     } = this.props;
     return (
@@ -30,7 +32,7 @@ export class App extends Component {
         <ul>
           <li>Latest Block Number: {this.state.latestBlockNumber}</li>
           <li>
-            Total Sent Value:
+            Total Transferred Value:
             {EthereumApi.weiToEther(totalSentWei)} ETH
           </li>
           <li>
@@ -38,8 +40,8 @@ export class App extends Component {
             {EthereumApi.weiToEther(totalReceivedWei)} ETH
           </li>
           <li>
-            Total Transferred Value:
-            {EthereumApi.weiToEther(totalSentWei - totalGasWei)} ETH
+            Total Sent Value:
+            {EthereumApi.weiToEther(totalSentWei + totalGasWei)} ETH
           </li>
           <li>
             Receiving Adresses:
@@ -48,6 +50,22 @@ export class App extends Component {
           <li>
             Sending Adresses:
             {sendingAddresses.join(", ")}
+          </li>
+          <li>
+            Contract Adresses:
+            {contractAddresses.join(", ")}
+          </li>
+          <li>
+            Total Number of Uncles:
+            {totalUncles}
+          </li>
+          <li>
+            Total Number of Unique Transactions that Sent Transactions:
+            {sendingAddresses.length}
+          </li>
+          <li>
+            Total Number of Unique Transactions that Received Transactions:
+            {receivingAddresses.length}
           </li>
         </ul>
         <button
@@ -65,11 +83,13 @@ export class App extends Component {
 }
 
 const mapStateToProps = state => ({
+  totalUncles: state.ethereum.totalUncles,
   totalGasWei: state.ethereum.totalGasWei,
   totalSentWei: state.ethereum.totalSentWei,
   totalReceivedWei: state.ethereum.totalReceivedWei,
   receivingAddresses: state.ethereum.receivingAddresses,
   sendingAddresses: state.ethereum.sendingAddresses,
+  contractAddresses: state.ethereum.contractAddresses,
 });
 
 const mapDispatchToProps = dispatch => ({

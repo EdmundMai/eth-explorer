@@ -1,34 +1,44 @@
 import ethereumActions from "../actions/ethereum-actions";
+import BigNumber from "bignumber.js";
 
+global.BigNumber = BigNumber;
 const initState = {
-  totalGasWei: 0,
-  totalSentWei: 0,
-  totalReceivedWei: 0,
+  totalUncles: 0,
+  totalGasWei: new BigNumber(0),
+  totalSentWei: new BigNumber(0),
+  totalReceivedWei: new BigNumber(0),
   receivingAddresses: [],
   sendingAddresses: [],
-  receivedTotalWei: 0,
-  sentTotalWei: 0,
+  contractAddresses: [],
 };
 
 export default (state = initState, action) => {
   switch (action.type) {
     case ethereumActions.ADD_BLOCK:
-      const { gasUsed } = action.payload;
+      const { gasUsed, uncles } = action.payload;
       return {
         ...state,
-        totalGasWei: state.totalGasWei + gasUsed,
+        totalUncles: state.totalUncles + uncles.length,
+        totalGasWei: state.totalGasWei.plus(new BigNumber(gasUsed)),
       };
     case ethereumActions.ADD_TRANSACTION:
       const { value, sendingAddress, receivingAddress } = action.payload;
       return {
         ...state,
-        totalSentWei: state.totalSentWei + value,
-        totalReceivedWei: state.totalReceivedWei + value,
+        totalSentWei: state.totalSentWei.plus(new BigNumber(value)),
+        totalReceivedWei: state.totalReceivedWei.plus(new BigNumber(value)),
         receivingAddresses: [
           ...new Set([...state.receivingAddresses, receivingAddress]),
         ],
         sendingAddresses: [
           ...new Set([...state.sendingAddresses, sendingAddress]),
+        ],
+      };
+    case ethereumActions.ADD_CONTRACT:
+      return {
+        ...state,
+        contractAddresses: [
+          ...new Set([...state.contractAddresses, action.payload]),
         ],
       };
 

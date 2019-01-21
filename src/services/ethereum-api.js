@@ -12,7 +12,9 @@ const getBlockRange = (start, end, callback) => {
 
   for (let i = 0; i <= end - start; i++) {
     batch.add(
-      web3.eth.getBlock.request(start + i, (err, block) => callback(block))
+      web3.eth.getBlock.request(start + i, true, (err, block) =>
+        callback(block)
+      )
     );
   }
 
@@ -33,8 +35,12 @@ const getTransactions = (transactionHashes, callback) => {
   batch.execute();
 };
 
+const isContractAddress = address =>
+  web3.eth.getCode(address).then(code => code !== "0x" && code !== "0x0");
+
 const weiToEther = wei => web3.utils.fromWei(wei.toString(), "ether");
 
+global.blah = web3;
 global.blah = web3;
 
 export default {
@@ -43,4 +49,5 @@ export default {
   getTransactions,
 
   weiToEther,
+  isContractAddress,
 };
