@@ -1,16 +1,35 @@
 import ethereumActions from "../actions/ethereum-actions";
 
 const initState = {
-  totalTransferredWei: 0,
+  totalGasWei: 0,
+  totalSentWei: 0,
+  totalReceivedWei: 0,
+  receivingAddresses: [],
+  sendingAddresses: [],
+  receivedTotalWei: 0,
+  sentTotalWei: 0,
 };
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case ethereumActions.ADD_TRANSACTION:
-      const { value } = action.payload;
+    case ethereumActions.ADD_BLOCK:
+      const { gasUsed } = action.payload;
       return {
         ...state,
-        totalTransferredWei: state.totalTransferredWei + value,
+        totalGasWei: state.totalGasWei + gasUsed,
+      };
+    case ethereumActions.ADD_TRANSACTION:
+      const { value, sendingAddress, receivingAddress } = action.payload;
+      return {
+        ...state,
+        totalSentWei: state.totalSentWei + value,
+        totalReceivedWei: state.totalReceivedWei + value,
+        receivingAddresses: [
+          ...new Set([...state.receivingAddresses, receivingAddress]),
+        ],
+        sendingAddresses: [
+          ...new Set([...state.sendingAddresses, sendingAddress]),
+        ],
       };
 
     case ethereumActions.FETCH_BLOCK_RANGE:

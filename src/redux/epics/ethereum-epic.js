@@ -16,8 +16,14 @@ const fetchBlockRangeEpic = action$ =>
           startingBlockNumber,
           endingBlockNumber,
           block => {
-            const { transactions } = block;
-            observer.next(ethereumActions.addBlock({ transactions }));
+            const { transactions, gasUsed } = block;
+            // console.log("block!!!: ", block);
+            observer.next(
+              ethereumActions.addBlock({
+                transactions,
+                gasUsed: parseInt(gasUsed),
+              })
+            );
           }
         );
       })
@@ -32,10 +38,13 @@ const addBlockEpic = action$ =>
         const { transactions: transactionHashes } = action.payload;
 
         EthereumApi.getTransactions(transactionHashes, transaction => {
-          const { value } = transaction;
+          const { value, from, to, gas, gasPrice } = transaction;
+          console.log(transaction);
           observer.next(
             ethereumActions.addTransaction({
               value: parseInt(value),
+              sendingAddress: from,
+              receivingAddress: to,
             })
           );
         });

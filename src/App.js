@@ -17,16 +17,43 @@ export class App extends Component {
   }
 
   render() {
-    const { totalTransferredWei, fetchBlockRange } = this.props;
+    const {
+      totalGasWei,
+      totalSentWei,
+      totalReceivedWei,
+      receivingAddresses,
+      sendingAddresses,
+      fetchBlockRange,
+    } = this.props;
     return (
       <div>
-        Latest Block Number: {this.state.latestBlockNumber}
-        Total Transfer Value{" "}
-        {EthereumApi.weiToEther(totalTransferredWei.toString())}
+        <ul>
+          <li>Latest Block Number: {this.state.latestBlockNumber}</li>
+          <li>
+            Total Sent Value:
+            {EthereumApi.weiToEther(totalSentWei)} ETH
+          </li>
+          <li>
+            Total Received Value:
+            {EthereumApi.weiToEther(totalReceivedWei)} ETH
+          </li>
+          <li>
+            Total Transferred Value:
+            {EthereumApi.weiToEther(totalSentWei - totalGasWei)} ETH
+          </li>
+          <li>
+            Receiving Adresses:
+            {receivingAddresses.join(", ")}
+          </li>
+          <li>
+            Sending Adresses:
+            {sendingAddresses.join(", ")}
+          </li>
+        </ul>
         <button
           onClick={() =>
             fetchBlockRange(
-              this.state.latestBlockNumber - 2,
+              this.state.latestBlockNumber - 1,
               this.state.latestBlockNumber
             )
           }>
@@ -38,7 +65,11 @@ export class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  totalTransferredWei: state.ethereum.totalTransferredWei,
+  totalGasWei: state.ethereum.totalGasWei,
+  totalSentWei: state.ethereum.totalSentWei,
+  totalReceivedWei: state.ethereum.totalReceivedWei,
+  receivingAddresses: state.ethereum.receivingAddresses,
+  sendingAddresses: state.ethereum.sendingAddresses,
 });
 
 const mapDispatchToProps = dispatch => ({

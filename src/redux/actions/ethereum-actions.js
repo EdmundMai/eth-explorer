@@ -12,13 +12,13 @@ const ACTIONS = Object.freeze({
     type: FETCH_BLOCK_RANGE,
     payload: { startingBlockNumber, endingBlockNumber },
   }),
-  addBlock: ({ transactions }) => ({
+  addBlock: ({ transactions, gasUsed }) => ({
     type: ADD_BLOCK,
-    payload: { transactions },
+    payload: { transactions, gasUsed },
   }),
-  addTransaction: ({ value }) => ({
+  addTransaction: ({ value, sendingAddress, receivingAddress }) => ({
     type: ADD_TRANSACTION,
-    payload: { value },
+    payload: { value, sendingAddress, receivingAddress },
   }),
 });
 

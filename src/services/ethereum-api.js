@@ -33,7 +33,9 @@ const getTransactions = (transactionHashes, callback) => {
   batch.execute();
 };
 
-const weiToEther = wei => web3.utils.fromWei(wei, "ether");
+const weiToEther = wei => web3.utils.fromWei(wei.toString(), "ether");
+
+global.blah = web3;
 
 export default {
   getLatestBlockNumber,
