@@ -1,7 +1,6 @@
 import ethereumActions from "../actions/ethereum-actions";
 import BigNumber from "bignumber.js";
 
-global.BigNumber = BigNumber;
 const initState = {
   totalUncles: 0,
   totalGasCostWei: new BigNumber(0),
@@ -15,10 +14,12 @@ export default (state = initState, action) => {
   switch (action.type) {
     case ethereumActions.ADD_BLOCK:
       const { uncles, transactions } = action.payload;
+
       const totalReceivedWei = transactions.reduce(
         (sum, t) => sum.plus(new BigNumber(t.value)),
         new BigNumber(0)
       );
+
       const totalGasCostWei = transactions.reduce((sum, t) => {
         const { gas, gasPrice } = t;
         const g = new BigNumber(gas);
@@ -26,6 +27,7 @@ export default (state = initState, action) => {
         const cost = g.times(gp);
         return sum.plus(cost);
       }, new BigNumber(0));
+
       return {
         ...state,
         totalUncles: state.totalUncles + uncles.length,

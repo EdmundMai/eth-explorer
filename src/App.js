@@ -8,6 +8,7 @@ import EthereumApi from "./services/ethereum-api";
 export class App extends Component {
   state = {
     latestBlockNumber: undefined,
+    blocksBackwards: 0,
   };
 
   componentDidMount() {
@@ -28,6 +29,22 @@ export class App extends Component {
     } = this.props;
     return (
       <div>
+        <input
+          type="number"
+          step={1}
+          min={0}
+          value={this.state.blocksBackwards}
+          onChange={e => this.setState({ blocksBackwards: e.target.value })}
+        />
+        <button
+          onClick={() =>
+            fetchBlockRange(
+              this.state.latestBlockNumber - this.state.blocksBackwards,
+              this.state.latestBlockNumber
+            )
+          }>
+          Fetch 2 blocks
+        </button>
         <ul>
           <li>Latest Block Number: {this.state.latestBlockNumber}</li>
           <li>
@@ -67,15 +84,6 @@ export class App extends Component {
             {receivingAddresses.length}
           </li>
         </ul>
-        <button
-          onClick={() =>
-            fetchBlockRange(
-              this.state.latestBlockNumber - 1,
-              this.state.latestBlockNumber
-            )
-          }>
-          Fetch 2 blocks
-        </button>
       </div>
     );
   }

@@ -7,7 +7,6 @@ const ACTIONS = Object.freeze({
   ADD_BLOCK,
   ADD_CONTRACT,
 
-  // actionCreators
   fetchBlockRange: (startingBlockNumber, endingBlockNumber) => ({
     type: FETCH_BLOCK_RANGE,
     payload: { startingBlockNumber, endingBlockNumber },
