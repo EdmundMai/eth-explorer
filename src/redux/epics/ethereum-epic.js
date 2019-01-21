@@ -23,12 +23,10 @@ const fetchBlockRangeEpic = action$ =>
           startingBlockNumber,
           endingBlockNumber,
           block => {
-            const { transactions, gasUsed, uncles } = block;
-            console.log("block!!!: ", block);
+            const { transactions, uncles } = block;
             observer.next(
               ethereumActions.addBlock({
                 transactions,
-                gasUsed,
                 uncles,
               })
             );
@@ -43,51 +41,18 @@ const addBlockEpic = action$ =>
     ofType(ethereumActions.ADD_BLOCK),
     switchMap(action =>
       Observable.create(observer => {
-        const { transactions: transactionHashes } = action.payload;
+        const { transactions } = action.payload;
 
-        EthereumApi.getTransactions(transactionHashes, transaction => {
-          const { value, from, to, gas, gasPrice } = transaction;
-          // console.log("transaction!!!: ", transaction);
-          observer.next(
-            ethereumActions.addTransaction({
-              value,
-              sendingAddress: from,
-              receivingAddress: to,
-            })
-          );
+        const addresses = [
+          ...transactions.map(t => t.from),
+          ...transactions.map(t => t.to),
+        ];
+
+        EthereumApi.filterByContracts(addresses, address => {
+          observer.next(ethereumActions.addContract(address));
         });
       })
     )
   );
 
-const addTransactionEpic = action$ =>
-  action$.pipe(
-    ofType(ethereumActions.ADD_TRANSACTION),
-    flatMap(action => {
-      const { sendingAddress, receivingAddress } = action.payload;
-      return [
-        ethereumActions.checkAddressType(sendingAddress),
-        ethereumActions.checkAddressType(receivingAddress),
-      ];
-    })
-  );
-
-const checkAddressTypeEpic = action$ =>
-  action$.pipe(
-    ofType(ethereumActions.CHECK_ADDRESS_TYPE),
-    filter(action => !!action.payload),
-    mergeMap(action => {
-      const address = action.payload;
-      return from(EthereumApi.isContractAddress(address)).pipe(
-        filter(isContractAddress => !!isContractAddress),
-        map(() => ethereumActions.addContract(address))
-      );
-    })
-  );
-
-export default combineEpics(
-  fetchBlockRangeEpic,
-  addBlockEpic,
-  addTransactionEpic,
-  checkAddressTypeEpic
-);
+export default combineEpics(fetchBlockRangeEpic, addBlockEpic);

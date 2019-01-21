@@ -5,7 +5,7 @@ const web3Provider = new Web3.providers.HttpProvider(
 );
 const web3 = new Web3(web3Provider);
 
-const getLatestBlockNumber = () => web3.eth.getBlockNumber().then(res => res);
+const getLatestBlockNumber = () => web3.eth.getBlockNumber();
 
 const getBlockRange = (start, end, callback) => {
   const batch = new web3.eth.BatchRequest();
@@ -21,33 +21,26 @@ const getBlockRange = (start, end, callback) => {
   batch.execute();
 };
 
-const getTransactions = (transactionHashes, callback) => {
+const filterByContracts = (addresses, callback) => {
   const batch = new web3.eth.BatchRequest();
+  const NON_CONTRACT_ADDRESS_CODES = ["0x", "0x0"];
 
-  transactionHashes.forEach(transactionHash => {
+  addresses.forEach(address => {
     batch.add(
-      web3.eth.getTransaction.request(transactionHash, (err, transaction) =>
-        callback(transaction)
-      )
+      web3.eth.getCode.request(address, (err, code) => {
+        if (!NON_CONTRACT_ADDRESS_CODES.includes(code)) callback(address);
+      })
     );
   });
 
   batch.execute();
 };
 
-const isContractAddress = address =>
-  web3.eth.getCode(address).then(code => code !== "0x" && code !== "0x0");
-
 const weiToEther = wei => web3.utils.fromWei(wei.toString(), "ether");
-
-global.blah = web3;
-global.blah = web3;
 
 export default {
   getLatestBlockNumber,
   getBlockRange,
-  getTransactions,
-
   weiToEther,
-  isContractAddress,
+  filterByContracts,
 };
