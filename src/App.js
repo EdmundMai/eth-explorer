@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import BackwardsForm from "./components/BackwardsForm";
+import RangeForm from "./components/RangeForm";
+
 import ethereumActions from "./redux/actions/ethereum-actions";
 
 import EthereumApi from "./services/ethereum-api";
@@ -8,7 +11,6 @@ import EthereumApi from "./services/ethereum-api";
 export class App extends Component {
   state = {
     latestBlockNumber: undefined,
-    blocksBackwards: 0,
   };
 
   componentDidMount() {
@@ -29,22 +31,18 @@ export class App extends Component {
     } = this.props;
     return (
       <div>
-        <input
-          type="number"
-          step={1}
-          min={0}
-          value={this.state.blocksBackwards}
-          onChange={e => this.setState({ blocksBackwards: e.target.value })}
-        />
-        <button
-          onClick={() =>
+        <BackwardsForm
+          onSubmit={blocksBackwards =>
             fetchBlockRange(
-              this.state.latestBlockNumber - this.state.blocksBackwards,
+              this.state.latestBlockNumber - blocksBackwards,
               this.state.latestBlockNumber
             )
-          }>
-          Fetch 2 blocks
-        </button>
+          }
+        />
+        <RangeForm
+          max={this.state.latestBlockNumber}
+          onSubmit={(start, end) => fetchBlockRange(start, end)}
+        />
         <ul>
           <li>Latest Block Number: {this.state.latestBlockNumber}</li>
           <li>

@@ -12,9 +12,9 @@ const getBlockRange = (start, end, callback) => {
 
   for (let i = 0; i <= end - start; i++) {
     batch.add(
-      web3.eth.getBlock.request(start + i, true, (err, block) =>
-        callback(block)
-      )
+      web3.eth.getBlock.request(start + i, true, (err, block) => {
+        callback(block);
+      })
     );
   }
 
