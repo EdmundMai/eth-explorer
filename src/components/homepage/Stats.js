@@ -13,7 +13,7 @@ const ListItem = styled.li`
 
 const Label = styled.div`
   display: flex;
-  width: 200px;
+  width: 300px;
   margin-right: 10px;
   font-weight: 600;
 `;

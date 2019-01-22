@@ -18,10 +18,17 @@ export class RangeForm extends Component {
 
   render() {
     const { max, onSubmit } = this.props;
+
+    const inputIsValid =
+      this.state.start.length &&
+      this.state.end.length &&
+      parseInt(this.state.end) <= max &&
+      parseInt(this.state.start) <= parseInt(this.state.end);
+
     return (
       <Container>
         <NumberInput
-          type="number"
+          required
           step={1}
           min={0}
           max={max}
@@ -29,7 +36,7 @@ export class RangeForm extends Component {
           onChange={e => this.setState({ start: e.target.value })}
         />
         <NumberInput
-          type="number"
+          required
           step={1}
           min={0}
           max={max}
@@ -37,7 +44,7 @@ export class RangeForm extends Component {
           onChange={e => this.setState({ end: e.target.value })}
         />
         <Button
-          disabled={!this.state.start.length || !this.state.end.length}
+          disabled={!inputIsValid}
           onClick={() =>
             onSubmit(parseInt(this.state.start), parseInt(this.state.end))
           }>

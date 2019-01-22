@@ -17,6 +17,9 @@ export class BackwardsForm extends Component {
 
   render() {
     const { onSubmit } = this.props;
+
+    const inputIsValid = this.state.blocksBackwards >= 0;
+
     return (
       <Container>
         <NumberInput
@@ -26,7 +29,9 @@ export class BackwardsForm extends Component {
           value={this.state.blocksBackwards}
           onChange={e => this.setState({ blocksBackwards: e.target.value })}
         />
-        <Button onClick={() => onSubmit(this.state.blocksBackwards)}>
+        <Button
+          disabled={!inputIsValid}
+          onClick={() => onSubmit(this.state.blocksBackwards)}>
           Go backwards in time!
         </Button>
       </Container>
