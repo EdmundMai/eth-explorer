@@ -7,22 +7,22 @@ const List = styled.ul`
 `;
 
 const ListItem = styled.li`
-  margin: 15px 0;
   display: flex;
+  margin: 15px 0;
 `;
 
 const Label = styled.div`
   display: flex;
-  width: 300px;
-  margin-right: 10px;
   font-weight: 600;
+  margin-right: 10px;
+  width: 300px;
 `;
 
 const Value = styled.div`
+  align-items: flex-start;
   display: flex;
   flex: 1;
   justify-content: flex-start;
-  align-items: flex-start;
 `;
 
 const Stats = ({

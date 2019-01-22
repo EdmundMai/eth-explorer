@@ -1,15 +1,15 @@
 import styled from "styled-components";
 
 export default styled.button`
-  padding: 10px 15px;
+  background-color: #5a88e8;
+  border: none;
+  color: #ffffff;
   cursor: pointer;
   outline: none;
-  border: none;
-  background-color: #5A88E8;
-  color: #ffffff;
+  padding: 10px 15px;
 
   &:disabled {
-    background-color: #E7E9EC;
+    background-color: #e7e9ec;
     cursor: not-allowed;
   }
 `;

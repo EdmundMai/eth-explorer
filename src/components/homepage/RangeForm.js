@@ -5,9 +5,9 @@ import Button from "../shared/Button";
 import NumberInput from "../shared/NumberInput";
 
 const Container = styled.div`
-  margin-bottom: 20px;
   display: flex;
   justify-content: center;
+  margin-bottom: 20px;
 `;
 
 export class RangeForm extends Component {
