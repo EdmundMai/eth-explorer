@@ -3,9 +3,11 @@ import styled from "styled-components";
 
 import Button from "../shared/Button";
 import NumberInput from "../shared/NumberInput";
+import Instructions from "../shared/Instructions";
 
 const Container = styled.div`
   display: flex;
+  align-items: center;
   justify-content: center;
   margin-bottom: 20px;
 `;
@@ -22,6 +24,7 @@ export class BackwardsForm extends Component {
 
     return (
       <Container>
+        <Instructions>Stats from</Instructions>
         <NumberInput
           type="number"
           step={1}
@@ -29,10 +32,12 @@ export class BackwardsForm extends Component {
           value={this.state.blocksBackwards}
           onChange={e => this.setState({ blocksBackwards: e.target.value })}
         />
+        <Instructions>blocks ago to now</Instructions>
+
         <Button
           disabled={!inputIsValid}
           onClick={() => onSubmit(this.state.blocksBackwards)}>
-          Go backwards in time!
+          Search
         </Button>
       </Container>
     );

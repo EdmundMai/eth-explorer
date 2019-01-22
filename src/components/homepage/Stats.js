@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
+const Container = styled.div`
+  margin-top: 50px;
+`;
+
 const List = styled.ul`
   list-style: none;
   padding: 0;
@@ -34,7 +38,7 @@ const Stats = ({
   contractAddresses,
   uncleCount,
 }) => (
-  <div>
+  <Container>
     <List>
       <ListItem>
         <Label>Total Transferred Value:</Label>
@@ -75,7 +79,7 @@ const Stats = ({
         <Value>{receivingAddresses.length}</Value>
       </ListItem>
     </List>
-  </div>
+  </Container>
 );
 
 export default Stats;

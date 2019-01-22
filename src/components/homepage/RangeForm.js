@@ -3,9 +3,11 @@ import styled from "styled-components";
 
 import Button from "../shared/Button";
 import NumberInput from "../shared/NumberInput";
+import Instructions from "../shared/Instructions";
 
 const Container = styled.div`
   display: flex;
+  align-items: center;
   justify-content: center;
   margin-bottom: 20px;
 `;
@@ -27,6 +29,7 @@ export class RangeForm extends Component {
 
     return (
       <Container>
+        <Instructions>Stats from block #</Instructions>
         <NumberInput
           required
           step={1}
@@ -35,6 +38,7 @@ export class RangeForm extends Component {
           value={this.state.start}
           onChange={e => this.setState({ start: e.target.value })}
         />
+        <Instructions>to block #</Instructions>
         <NumberInput
           required
           step={1}

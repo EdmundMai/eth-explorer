@@ -43,6 +43,7 @@ export class Homepage extends Component {
             )
           }
         />
+        <Caption>OR</Caption>
         <RangeForm
           max={this.state.latestBlockNumber}
           onSubmit={(start, end) => fetchBlockRange(start, end)}
