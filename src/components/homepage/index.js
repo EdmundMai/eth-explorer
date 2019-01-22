@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import BackwardsForm from "./components/BackwardsForm";
-import RangeForm from "./components/RangeForm";
-import Stats from "./components/Stats";
+import BackwardsForm from "./BackwardsForm";
+import RangeForm from "./RangeForm";
+import Stats from "./Stats";
+import Header from "./Header";
+import Caption from "./Caption";
 
-import ethereumActions from "./redux/actions/ethereum-actions";
+import ethereumActions from "../../redux/actions/ethereum-actions";
 
-import EthereumApi from "./services/ethereum-api";
+import EthereumApi from "../../services/ethereum-api";
 
-export class App extends Component {
+export class Homepage extends Component {
   state = {
     latestBlockNumber: undefined,
   };
@@ -32,6 +34,7 @@ export class App extends Component {
     } = this.props;
     return (
       <div>
+        <Header>Edmund's Eth Explorer</Header>
         <BackwardsForm
           onSubmit={blocksBackwards =>
             fetchBlockRange(
@@ -44,7 +47,7 @@ export class App extends Component {
           max={this.state.latestBlockNumber}
           onSubmit={(start, end) => fetchBlockRange(start, end)}
         />
-        <p>Latest Block Number: {this.state.latestBlockNumber}</p>
+        <Caption>Current Block Number: {this.state.latestBlockNumber}</Caption>
         <Stats
           transferredEther={EthereumApi.weiToEther(totalReceivedWei)}
           receivedEther={EthereumApi.weiToEther(totalReceivedWei)}
@@ -80,4 +83,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(Homepage);

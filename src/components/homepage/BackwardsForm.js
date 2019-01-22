@@ -1,4 +1,14 @@
 import React, { Component } from "react";
+import styled from "styled-components";
+
+import Button from "../shared/Button";
+import NumberInput from "../shared/NumberInput";
+
+const Container = styled.div`
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+`;
 
 export class BackwardsForm extends Component {
   state = {
@@ -8,18 +18,18 @@ export class BackwardsForm extends Component {
   render() {
     const { onSubmit } = this.props;
     return (
-      <div>
-        <input
+      <Container>
+        <NumberInput
           type="number"
           step={1}
           min={0}
           value={this.state.blocksBackwards}
           onChange={e => this.setState({ blocksBackwards: e.target.value })}
         />
-        <button onClick={() => onSubmit(this.state.blocksBackwards)}>
+        <Button onClick={() => onSubmit(this.state.blocksBackwards)}>
           Go backwards in time!
-        </button>
-      </div>
+        </Button>
+      </Container>
     );
   }
 }

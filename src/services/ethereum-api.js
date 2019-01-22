@@ -25,13 +25,15 @@ const filterByContracts = (addresses, callback) => {
   const batch = new web3.eth.BatchRequest();
   const NON_CONTRACT_ADDRESS_CODES = ["0x", "0x0"];
 
-  addresses.forEach(address => {
-    batch.add(
-      web3.eth.getCode.request(address, (err, code) => {
-        if (!NON_CONTRACT_ADDRESS_CODES.includes(code)) callback(address);
-      })
-    );
-  });
+  addresses
+    .filter(a => !!a)
+    .forEach(address => {
+      batch.add(
+        web3.eth.getCode.request(address, (err, code) => {
+          if (!NON_CONTRACT_ADDRESS_CODES.includes(code)) callback(address);
+        })
+      );
+    });
 
   batch.execute();
 };
