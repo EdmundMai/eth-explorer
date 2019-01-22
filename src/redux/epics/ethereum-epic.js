@@ -1,12 +1,5 @@
-import { from, of, Observable } from "rxjs";
-import {
-  filter,
-  map,
-  flatMap,
-  mergeMap,
-  switchMap,
-  catchError,
-} from "rxjs/operators";
+import { Observable } from "rxjs";
+import { switchMap } from "rxjs/operators";
 import { ofType, combineEpics } from "redux-observable";
 import EthereumApi from "../../services/ethereum-api";
 
