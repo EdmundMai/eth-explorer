@@ -37,6 +37,7 @@ const Stats = ({
   sendingAddresses,
   contractAddresses,
   uncleCount,
+  contractsCreatedCount,
 }) => (
   <Container>
     <List>
@@ -67,6 +68,10 @@ const Stats = ({
       <ListItem>
         <Label>Total Number of Uncles:</Label>
         <Value>{uncleCount}</Value>
+      </ListItem>
+      <ListItem>
+        <Label>Total Number of Contracts Created:</Label>
+        <Value>{contractsCreatedCount}</Value>
       </ListItem>
       <ListItem>
         <Label>Total Number of Unique Addresses that Sent Transactions:</Label>

@@ -25,6 +25,7 @@ export class Homepage extends Component {
   render() {
     const {
       totalUncles,
+      totalContractsCreated,
       totalGasCostWei,
       totalReceivedWei,
       receivingAddresses,
@@ -59,6 +60,7 @@ export class Homepage extends Component {
           receivingAddresses={receivingAddresses}
           contractAddresses={contractAddresses}
           uncleCount={totalUncles}
+          contractsCreatedCount={totalContractsCreated}
         />
       </div>
     );
@@ -67,6 +69,7 @@ export class Homepage extends Component {
 
 const mapStateToProps = state => ({
   totalUncles: state.ethereum.totalUncles,
+  totalContractsCreated: state.ethereum.totalContractsCreated,
   totalGasCostWei: state.ethereum.totalGasCostWei,
   totalReceivedWei: state.ethereum.totalReceivedWei,
   receivingAddresses: state.ethereum.receivingAddresses,

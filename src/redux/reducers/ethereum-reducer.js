@@ -3,6 +3,7 @@ import BigNumber from "bignumber.js";
 
 const initState = {
   totalUncles: 0,
+  totalContractsCreated: 0,
   totalGasCostWei: new BigNumber(0),
   totalReceivedWei: new BigNumber(0),
   receivingAddresses: [],
@@ -20,6 +21,8 @@ export default (state = initState, action) => {
         new BigNumber(0)
       );
 
+      const totalContractsCreated = transactions.filter(t => !t.to).length;
+
       const totalGasCostWei = transactions.reduce((sum, t) => {
         const { gas, gasPrice } = t;
         const g = new BigNumber(gas);
@@ -31,6 +34,8 @@ export default (state = initState, action) => {
       return {
         ...state,
         totalUncles: state.totalUncles + uncles.length,
+        totalContractsCreated:
+          state.totalContractsCreated + totalContractsCreated,
         totalGasCostWei: state.totalGasCostWei.plus(totalGasCostWei),
         totalReceivedWei: state.totalReceivedWei.plus(
           new BigNumber(totalReceivedWei)
